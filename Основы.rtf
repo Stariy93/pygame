@@ -1,0 +1,179 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset204 Calibri;}{\f1\fnil Calibri;}{\f2\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang1049\par
+---\par
+\par
+### 1. \'c1\'e0\'e7\'ee\'e2\'fb\'e9 \'f8\'e0\'e1\'eb\'ee\'ed \'e8\'e3\'f0\'fb (Game Loop)\par
+\'ca\'e0\'e6\'e4\'e0\'ff \'e8\'e3\'f0\'e0 \'ed\'e0 Pygame \'f1\'f2\'f0\'ee\'e8\'f2\'f1\'ff \'ed\'e0 \'fd\'f2\'ee\'ec \'f4\'f3\'ed\'e4\'e0\'ec\'e5\'ed\'f2\'e5: \'e8\'ed\'e8\'f6\'e8\'e0\'eb\'e8\'e7\'e0\'f6\'e8\'ff, \'f6\'e8\'ea\'eb (\'ee\'e1\'f0\'e0\'e1\'ee\'f2\'ea\'e0 \'f1\'ee\'e1\'fb\'f2\'e8\'e9 -> \'ee\'e1\'ed\'ee\'e2\'eb\'e5\'ed\'e8\'e5 \'eb\'ee\'e3\'e8\'ea\'e8 -> \'ee\'f2\'f0\'e8\'f1\'ee\'e2\'ea\'e0), \'e7\'e0\'e2\'e5\'f0\'f8\'e5\'ed\'e8\'e5.\par
+\par
+```python\par
+import pygame\par
+import sys\par
+\par
+pygame.init()\par
+screen = pygame.display.set_mode((800, 600))\par
+pygame.display.set_caption("\'cc\'ee\'ff \'f1\'f3\'ef\'e5\'f0 \'e8\'e3\'f0\'e0")\par
+clock = pygame.time.Clock()\par
+\par
+running = True\par
+while running:\par
+    # 1. \'ce\'c1\'d0\'c0\'c1\'ce\'d2\'ca\'c0 \'d1\'ce\'c1\'db\'d2\'c8\'c9 (\'ed\'e0\'e6\'e0\'f2\'e8\'ff \'ee\'e4\'e8\'ed \'f0\'e0\'e7, \'e7\'e0\'ea\'f0\'fb\'f2\'e8\'e5 \'ee\'ea\'ed\'e0)\par
+    for event in pygame.event.get():\par
+        if event.type == pygame.QUIT:\par
+            running = False\par
+            \par
+    # 2. \'ce\'c1\'cd\'ce\'c2\'cb\'c5\'cd\'c8\'c5 \'cb\'ce\'c3\'c8\'ca\'c8 (\'e4\'e2\'e8\'e6\'e5\'ed\'e8\'e5, \'f4\'e8\'e7\'e8\'ea\'e0)\par
+    dt = clock.tick(60) / 1000.0  # \'c4\'e5\'eb\'fc\'f2\'e0-\'e2\'f0\'e5\'ec\'ff \'e4\'eb\'ff \'ed\'e5\'e7\'e0\'e2\'e8\'f1\'e8\'ec\'ee\'e3\'ee \'ee\'f2 FPS \'e4\'e2\'e8\'e6\'e5\'ed\'e8\'ff\par
+    \par
+    # 3. \'ce\'d2\'d0\'c8\'d1\'ce\'c2\'ca\'c0 (\'d4\'ee\'ed -> \'ce\'e1\'fa\'e5\'ea\'f2\'fb -> \'c8\'ed\'f2\'e5\'f0\'f4\'e5\'e9\'f1)\par
+    screen.fill("black")  # \'c2 Pygame-CE \'ec\'ee\'e6\'ed\'ee \'ef\'e8\'f1\'e0\'f2\'fc \'ed\'e0\'e7\'e2\'e0\'ed\'e8\'ff \'f6\'e2\'e5\'f2\'ee\'e2 \'f1\'f2\'f0\'ee\'ea\'ee\'e9!\par
+    \par
+    # ... \'e7\'e4\'e5\'f1\'fc \'f4\'f3\'ed\'ea\'f6\'e8\'e8 \'ee\'f2\'f0\'e8\'f1\'ee\'e2\'ea\'e8 ...\par
+\par
+    pygame.display.flip() # \'cf\'ee\'ea\'e0\'e7\'fb\'e2\'e0\'e5\'ec \'ed\'ee\'e2\'fb\'e9 \'ea\'e0\'e4\'f0\par
+\par
+pygame.quit()\par
+sys.exit()\par
+```\par
+\par
+---\par
+\par
+### 2. \'ca\'ee\'ee\'f0\'e4\'e8\'ed\'e0\'f2\'fb, Rect \'e8 FRect (\'ca\'eb\'fe\'f7\'e5\'e2\'e0\'ff \'ea\'ee\'ed\'f6\'e5\'ef\'f6\'e8\'ff!)\par
+\'c2 Pygame \'e2\'f1\'b8 \'ef\'f0\'ff\'ec\'ee\'f3\'e3\'ee\'eb\'fc\'ed\'ee\'e5. **Rect** \'f5\'f0\'e0\'ed\'e8\'f2 \'ea\'ee\'ee\'f0\'e4\'e8\'ed\'e0\'f2\'fb \'e8 \'f0\'e0\'e7\'ec\'e5\'f0\'fb. \'c2 Pygame-CE \'e4\'ee\'e1\'e0\'e2\'e8\'eb\'e8 **FRect** (Float Rect) \f1\emdash  \f0\'ee\'ed \'ef\'ee\'e4\'e4\'e5\'f0\'e6\'e8\'e2\'e0\'e5\'f2 \'e4\'f0\'ee\'e1\'ed\'fb\'e5 \'f7\'e8\'f1\'eb\'e0, \'f7\'f2\'ee \'e4\'e5\'eb\'e0\'e5\'f2 \'e4\'e2\'e8\'e6\'e5\'ed\'e8\'e5 \'e8\'e4\'e5\'e0\'eb\'fc\'ed\'ee \'ef\'eb\'e0\'e2\'ed\'fb\'ec.\par
+\par
+```python\par
+# \'d1\'ee\'e7\'e4\'e0\'ed\'e8\'e5: (x, y, \'f8\'e8\'f0\'e8\'ed\'e0, \'e2\'fb\'f1\'ee\'f2\'e0)\par
+player_rect = pygame.FRect(100.5, 200.2, 50, 50)\par
+\par
+# \'cf\'ee\'eb\'e5\'e7\'ed\'fb\'e5 \'f2\'ee\'f7\'ea\'e8 \'ef\'f0\'e8\'e2\'ff\'e7\'ea\'e8 (\'ec\'ee\'e6\'ed\'ee \'f7\'e8\'f2\'e0\'f2\'fc \'e8 \'e8\'e7\'ec\'e5\'ed\'ff\'f2\'fc):\par
+player_rect.x, player_rect.y         # \'c2\'e5\'f0\'f5\'ed\'e8\'e9 \'eb\'e5\'e2\'fb\'e9 \'f3\'e3\'ee\'eb\par
+player_rect.centerx, player_rect.centery # \'d6\'e5\'ed\'f2\'f0\par
+player_rect.center                   # \'ca\'ee\'f0\'f2\'e5\'e6 (x, y) \'f6\'e5\'ed\'f2\'f0\'e0\par
+player_rect.top, player_rect.bottom  # \'c2\'e5\'f0\'f5\'ed\'ff\'ff \'e8 \'ed\'e8\'e6\'ed\'ff\'ff \'e3\'f0\'e0\'ed\'e8\par
+player_rect.left, player_rect.right  # \'cb\'e5\'e2\'e0\'ff \'e8 \'ef\'f0\'e0\'e2\'e0\'ff \'e3\'f0\'e0\'ed\'e8\par
+\par
+# \'cf\'e5\'f0\'e5\'ec\'e5\'f9\'e5\'ed\'e8\'e5 \'ef\'f0\'ff\'ec\'ee\'f3\'e3\'ee\'eb\'fc\'ed\'e8\'ea\'e0\par
+player_rect.x += 150 * dt  # \'c4\'e2\'e8\'e6\'e5\'ed\'e8\'e5 \'e2\'ef\'f0\'e0\'e2\'ee \'ed\'e0 150 \'ef\'e8\'ea\'f1\'e5\'eb\'e5\'e9 \'e2 \'f1\'e5\'ea\'f3\'ed\'e4\'f3\par
+```\par
+\par
+---\par
+\par
+### 3. \'ce\'f2\'f0\'e8\'f1\'ee\'e2\'ea\'e0 \'f4\'e8\'e3\'f3\'f0 (Draw)\par
+\'d0\'e8\'f1\'ee\'e2\'e0\'ed\'e8\'e5 \'ef\'f0\'ee\'f1\'f2\'fb\'f5 \'e3\'e5\'ee\'ec\'e5\'f2\'f0\'e8\'f7\'e5\'f1\'ea\'e8\'f5 \'f4\'e8\'e3\'f3\'f0. \'c2 Pygame-CE \'f6\'e2\'e5\'f2\'e0 \'ec\'ee\'e6\'ed\'ee \'e7\'e0\'e4\'e0\'e2\'e0\'f2\'fc \'ea\'ee\'f0\'f2\'e5\'e6\'e5\'ec `(255, 0, 0)`, \'f1\'f2\'f0\'ee\'ea\'ee\'e9 `"red"` \'e8\'eb\'e8 HEX-\'ea\'ee\'e4\'ee\'ec `"#FF0000"`.\par
+\par
+```python\par
+# \'cf\'f0\'ff\'ec\'ee\'f3\'e3\'ee\'eb\'fc\'ed\'e8\'ea (\'ef\'ee\'e2\'e5\'f0\'f5\'ed\'ee\'f1\'f2\'fc, \'f6\'e2\'e5\'f2, Rect \'e8\'eb\'e8 \'ea\'ee\'ee\'f0\'e4\'e8\'ed\'e0\'f2\'fb)\par
+# \'c5\'f1\'eb\'e8 \'e4\'ee\'e1\'e0\'e2\'e8\'f2\'fc 4-\'e9 \'ef\'e0\'f0\'e0\'ec\'e5\'f2\'f0 (\'f7\'e8\'f1\'eb\'ee), \'ee\'ed \'f1\'f2\'e0\'ed\'e5\'f2 \'f2\'ee\'eb\'f9\'e8\'ed\'ee\'e9 \'f0\'e0\'ec\'ea\'e8. \'d1\'e2\'ee\'e9\'f1\'f2\'e2\'ee border_radius \'f1\'ea\'f0\'f3\'e3\'eb\'ff\'e5\'f2 \'f3\'e3\'eb\'fb.\par
+pygame.draw.rect(screen, "red", player_rect, border_radius=10)\par
+\par
+# \'ca\'f0\'f3\'e3 (\'ef\'ee\'e2\'e5\'f0\'f5\'ed\'ee\'f1\'f2\'fc, \'f6\'e2\'e5\'f2, \'f6\'e5\'ed\'f2\'f0, \'f0\'e0\'e4\'e8\'f3\'f1)\par
+pygame.draw.circle(screen, "blue", (400, 300), 50)\par
+\par
+# \'cb\'e8\'ed\'e8\'ff (\'ef\'ee\'e2\'e5\'f0\'f5\'ed\'ee\'f1\'f2\'fc, \'f6\'e2\'e5\'f2, \'ed\'e0\'f7\'e0\'eb\'ee, \'ea\'ee\'ed\'e5\'f6, \'f2\'ee\'eb\'f9\'e8\'ed\'e0)\par
+pygame.draw.line(screen, "green", (0, 0), (800, 600), 5)\par
+```\par
+\par
+---\par
+\par
+### 4. \'d0\'e0\'e1\'ee\'f2\'e0 \'f1 \'e8\'e7\'ee\'e1\'f0\'e0\'e6\'e5\'ed\'e8\'ff\'ec\'e8 (Surfaces)\par
+\'c8\'e7\'ee\'e1\'f0\'e0\'e6\'e5\'ed\'e8\'ff \'e2 Pygame \'ed\'e0\'e7\'fb\'e2\'e0\'fe\'f2\'f1\'ff \'ef\'ee\'e2\'e5\'f0\'f5\'ed\'ee\'f1\'f2\'ff\'ec\'e8 (`Surface`). \'dd\'ea\'f0\'e0\'ed \f1\emdash  \f0\'fd\'f2\'ee \'f2\'ee\'e6\'e5 \'e3\'eb\'e0\'e2\'ed\'e0\'ff \'ef\'ee\'e2\'e5\'f0\'f5\'ed\'ee\'f1\'f2\'fc.\par
+\par
+```python\par
+# \'c7\'e0\'e3\'f0\'f3\'e7\'ea\'e0 \'ea\'e0\'f0\'f2\'e8\'ed\'ea\'e8 (\'ce\'c1\'df\'c7\'c0\'d2\'c5\'cb\'dc\'cd\'ce \'e8\'f1\'ef\'ee\'eb\'fc\'e7\'f3\'e9\'f2\'e5 convert() \'e8\'eb\'e8 convert_alpha() \'e4\'eb\'ff \'f3\'f1\'ea\'ee\'f0\'e5\'ed\'e8\'ff \'e8\'e3\'f0\'fb)\par
+player_img = pygame.image.load("player.png").convert_alpha()\par
+\par
+# \'c8\'e7\'ec\'e5\'ed\'e5\'ed\'e8\'e5 \'f0\'e0\'e7\'ec\'e5\'f0\'e0\par
+player_img = pygame.transform.scale(player_img, (100, 100)) # \'d2\'ee\'f7\'ed\'fb\'e9 \'f0\'e0\'e7\'ec\'e5\'f0\par
+player_img = pygame.transform.rotozoom(player_img, 45, 1.5) # \'cf\'ee\'e2\'ee\'f0\'ee\'f2 \'ed\'e0 45 \'e3\'f0\'e0\'e4\'f3\'f1\'ee\'e2 \'e8 \'f3\'e2\'e5\'eb\'e8\'f7\'e5\'ed\'e8\'e5 \'e2 1.5 \'f0\'e0\'e7\'e0\par
+\par
+# \'ce\'f2\'f0\'e8\'f1\'ee\'e2\'ea\'e0 \'ea\'e0\'f0\'f2\'e8\'ed\'ea\'e8 \'ed\'e0 \'fd\'ea\'f0\'e0\'ed\'e5 (blit)\par
+# \'cf\'e5\'f0\'e5\'e4\'e0\'e5\'ec \'f1\'e0\'ec\'f3 \'ea\'e0\'f0\'f2\'e8\'ed\'ea\'f3 \'e8 \'e5\'b8 \'ea\'ee\'ee\'f0\'e4\'e8\'ed\'e0\'f2\'fb (\'e8\'eb\'e8 Rect)\par
+screen.blit(player_img, player_rect) \par
+```\par
+\par
+---\par
+\par
+### 5. \'ce\'e1\'f0\'e0\'e1\'ee\'f2\'ea\'e0 \'e2\'e2\'ee\'e4\'e0 (\'d3\'ef\'f0\'e0\'e2\'eb\'e5\'ed\'e8\'e5)\par
+\par
+**\'c0. \'ca\'eb\'e0\'e2\'e8\'e0\'f2\'f3\'f0\'e0 (\'c7\'e0\'e6\'e0\'f2\'e8\'e5 \'ea\'ed\'ee\'ef\'ee\'ea \f1\emdash  \f0\'e4\'eb\'ff \'f5\'ee\'e4\'fc\'e1\'fb)**\par
+\'cf\'e8\'f8\'e5\'f2\'f1\'ff \'e2 \'e3\'eb\'e0\'e2\'ed\'ee\'ec \'f6\'e8\'ea\'eb\'e5 *\'e2\'ed\'e5* `for event in pygame.event.get()`:\par
+```python\par
+keys = pygame.key.get_pressed()\par
+if keys[pygame.K_w] or keys[pygame.K_UP]:\par
+    player_rect.y -= speed\par
+if keys[pygame.K_SPACE]:\par
+    print("\'cf\'f0\'ee\'e1\'e5\'eb \'e7\'e0\'e6\'e0\'f2!")\par
+```\par
+\par
+**\'c1. \'ca\'eb\'e0\'e2\'e8\'e0\'f2\'f3\'f0\'e0 (\'ce\'e4\'e8\'ed\'ee\'f7\'ed\'ee\'e5 \'ed\'e0\'e6\'e0\'f2\'e8\'e5 \f1\emdash  \f0\'e4\'eb\'ff \'ef\'f0\'fb\'e6\'ea\'e0/\'e2\'fb\'f1\'f2\'f0\'e5\'eb\'e0)**\par
+\'cf\'e8\'f8\'e5\'f2\'f1\'ff *\'e2\'ed\'f3\'f2\'f0\'e8* `for event in pygame.event.get()`:\par
+```python\par
+if event.type == pygame.KEYDOWN:\par
+    if event.key == pygame.K_SPACE:\par
+        print("\'cf\'f0\'fb\'e6\'ee\'ea!") # \'d1\'f0\'e0\'e1\'ee\'f2\'e0\'e5\'f2 1 \'f0\'e0\'e7, \'e4\'e0\'e6\'e5 \'e5\'f1\'eb\'e8 \'e4\'e5\'f0\'e6\'e0\'f2\'fc \'ef\'f0\'ee\'e1\'e5\'eb\par
+```\par
+\par
+**\'c2. \'cc\'fb\'f8\'fc**\par
+```python\par
+mouse_x, mouse_y = pygame.mouse.get_pos() # \'cf\'ee\'eb\'f3\'f7\'e8\'f2\'fc \'ea\'ee\'ee\'f0\'e4\'e8\'ed\'e0\'f2\'fb \'ea\'f3\'f0\'f1\'ee\'f0\'e0\par
+mouse_buttons = pygame.mouse.get_pressed() # (\'cb\'ca\'cc, \'d1\'ca\'cc, \'cf\'ca\'cc)\par
+\par
+if mouse_buttons[0]: # \'c5\'f1\'eb\'e8 \'e7\'e0\'e6\'e0\'f2\'e0 \'eb\'e5\'e2\'e0\'ff \'ea\'ed\'ee\'ef\'ea\'e0\par
+    print(f"\'d1\'f2\'f0\'e5\'eb\'ff\'e5\'ec \'e2 \'f2\'ee\'f7\'ea\'f3 \{mouse_x\}, \{mouse_y\}")\par
+```\par
+\par
+---\par
+\par
+### 6. \'d1\'f2\'ee\'eb\'ea\'ed\'ee\'e2\'e5\'ed\'e8\'ff (\'ca\'ee\'eb\'eb\'e8\'e7\'e8\'e8)\par
+\'cf\'f0\'ee\'e2\'e5\'f0\'ea\'e0, \'ef\'e5\'f0\'e5\'f1\'e5\'ea\'e0\'fe\'f2\'f1\'ff \'eb\'e8 \'ee\'e1\'fa\'e5\'ea\'f2\'fb.\par
+\par
+```python\par
+enemy_rect = pygame.FRect(300, 300, 50, 50)\par
+\par
+# \'d1\'f2\'ee\'eb\'ea\'ed\'f3\'eb\'f1\'ff \'eb\'e8 \'e8\'e3\'f0\'ee\'ea \'f1 \'e2\'f0\'e0\'e3\'ee\'ec?\par
+if player_rect.colliderect(enemy_rect):\par
+    print("\'d3\'f0\'ee\'ed!")\par
+\par
+# \'ca\'eb\'e8\'ea\'ed\'f3\'eb\'e8 \'eb\'e8 \'ec\'fb\'f8\'ea\'ee\'e9 \'ef\'ee \'e2\'f0\'e0\'e3\'f3?\par
+if enemy_rect.collidepoint(mouse_x, mouse_y) and mouse_buttons[0]:\par
+    print("\'c2\'f0\'e0\'e3 \'f3\'e1\'e8\'f2!")\par
+```\par
+\par
+---\par
+\par
+### 7. \'d2\'e5\'ea\'f1\'f2 \'e8 \'d8\'f0\'e8\'f4\'f2\'fb\par
+\'c2\'fb\'e2\'ee\'e4 \'f2\'e5\'ea\'f1\'f2\'e0 \'ed\'e0 \'fd\'ea\'f0\'e0\'ed. \'c2 Pygame-CE \'e4\'ee\'e1\'e0\'e2\'eb\'e5\'ed\'e0 \'f3\'e4\'ee\'e1\'ed\'e0\'ff \'f4\'f3\'ed\'ea\'f6\'e8\'ff \'ef\'e5\'f0\'e5\'ed\'ee\'f1\'e0 \'f1\'f2\'f0\'ee\'ea.\par
+\par
+```python\par
+# \'d1\'ee\'e7\'e4\'e0\'e5\'ec \'f8\'f0\'e8\'f4\'f2 (None - \'f1\'f2\'e0\'ed\'e4\'e0\'f0\'f2\'ed\'fb\'e9 \'f8\'f0\'e8\'f4\'f2, 36 - \'f0\'e0\'e7\'ec\'e5\'f0)\par
+font = pygame.font.Font(None, 36)\par
+\par
+# \'d0\'e5\'ed\'e4\'e5\'f0\'e8\'ec \'f2\'e5\'ea\'f1\'f2 \'e2 \'ea\'e0\'f0\'f2\'e8\'ed\'ea\'f3 (Surface)\par
+# \'cf\'e0\'f0\'e0\'ec\'e5\'f2\'f0\'fb: \'d2\'e5\'ea\'f1\'f2, \'d1\'e3\'eb\'e0\'e6\'e8\'e2\'e0\'ed\'e8\'e5 (True), \'d6\'e2\'e5\'f2 \'f2\'e5\'ea\'f1\'f2\'e0, \'d6\'e2\'e5\'f2 \'f4\'ee\'ed\'e0 (\'ed\'e5\'ee\'e1\'ff\'e7\'e0\'f2\'e5\'eb\'fc\'ed\'ee), wrap_length (\'ec\'e0\'ea\'f1\'e8\'ec\'e0\'eb\'fc\'ed\'e0\'ff \'f8\'e8\'f0\'e8\'ed\'e0 \'e2 \'ef\'e8\'ea\'f1\'e5\'eb\'ff\'f5 \'e4\'ee \'ef\'e5\'f0\'e5\'ed\'ee\'f1\'e0 \'f1\'f2\'f0\'ee\'ea\'e8 - \'f4\'e8\'f8\'ea\'e0 CE!)\par
+text_surface = font.render("\'ce\'f7\'e5\'ed\'fc \'e4\'eb\'e8\'ed\'ed\'fb\'e9 \'f2\'e5\'ea\'f1\'f2, \'ea\'ee\'f2\'ee\'f0\'fb\'e9 \'f1\'e0\'ec \'ef\'e5\'f0\'e5\'ed\'e5\'f1\'e5\'f2\'f1\'ff", True, "white", wraplength=200)\par
+\par
+# \'d0\'e8\'f1\'f3\'e5\'ec \'f2\'e5\'ea\'f1\'f2 \'ed\'e0 \'fd\'ea\'f0\'e0\'ed\'e5\par
+screen.blit(text_surface, (50, 50))\par
+```\par
+\par
+---\par
+\par
+### 8. \'c7\'e2\'f3\'ea\'e8 \'e8 \'cc\'f3\'e7\'fb\'ea\'e0\par
+Pygame \'f0\'e0\'e7\'e4\'e5\'eb\'ff\'e5\'f2 \'e4\'eb\'e8\'ed\'ed\'f3\'fe \'f4\'ee\'ed\'ee\'e2\'f3\'fe \'ec\'f3\'e7\'fb\'ea\'f3 \'e8 \'ea\'ee\'f0\'ee\'f2\'ea\'e8\'e5 \'e7\'e2\'f3\'ea\'ee\'e2\'fb\'e5 \'fd\'f4\'f4\'e5\'ea\'f2\'fb.\par
+\par
+```python\par
+# \'d4\'ee\'ed\'ee\'e2\'e0\'ff \'ec\'f3\'e7\'fb\'ea\'e0 (\'ec\'ee\'e6\'e5\'f2 \'e8\'e3\'f0\'e0\'f2\'fc \'f2\'ee\'eb\'fc\'ea\'ee \'ee\'e4\'e8\'ed \'f2\'f0\'e5\'ea \'ee\'e4\'ed\'ee\'e2\'f0\'e5\'ec\'e5\'ed\'ed\'ee)\par
+pygame.mixer.music.load("background.mp3")\par
+pygame.mixer.music.set_volume(0.5) # \'c3\'f0\'ee\'ec\'ea\'ee\'f1\'f2\'fc \'ee\'f2 0.0 \'e4\'ee 1.0\par
+pygame.mixer.music.play(-1) # -1 \'ee\'e7\'ed\'e0\'f7\'e0\'e5\'f2 \'e7\'e0\'f6\'e8\'ea\'eb\'e8\'f2\'fc \'e1\'e5\'f1\'ea\'ee\'ed\'e5\'f7\'ed\'ee\par
+\par
+# \'ca\'ee\'f0\'ee\'f2\'ea\'e8\'e5 \'e7\'e2\'f3\'ea\'e8 (\'e2\'fb\'f1\'f2\'f0\'e5\'eb\'fb, \'ef\'f0\'fb\'e6\'ea\'e8)\par
+shoot_sound = pygame.mixer.Sound("shoot.wav")\par
+shoot_sound.set_volume(0.8)\par
+shoot_sound.play() # \'c2\'fb\'e7\'fb\'e2\'e0\'f2\'fc \'e2 \'ec\'ee\'ec\'e5\'ed\'f2 \'e2\'fb\'f1\'f2\'f0\'e5\'eb\'e0\par
+```\par
+\par
+### \'d1\'ee\'e2\'e5\'f2 \'ef\'ee \'e0\'f0\'f5\'e8\'f2\'e5\'ea\'f2\'f3\'f0\'e5\par
+\'ca\'ee\'e3\'e4\'e0 \'ee\'e1\'fa\'e5\'ea\'f2\'ee\'e2 \'f1\'f2\'e0\'ed\'e5\'f2 \'ec\'ed\'ee\'e3\'ee, \'e8\'f1\'ef\'ee\'eb\'fc\'e7\'f3\'e9\'f2\'e5 `pygame.sprite.Sprite` \'e8 `pygame.sprite.Group`. \'dd\'f2\'ee \'e2\'f1\'f2\'f0\'ee\'e5\'ed\'ed\'e0\'ff \'f1\'e8\'f1\'f2\'e5\'ec\'e0 Pygame, \'ea\'ee\'f2\'ee\'f0\'e0\'ff \'ef\'ee\'e7\'e2\'ee\'eb\'ff\'e5\'f2 \'ee\'e4\'ed\'ee\'e9 \'f1\'f2\'f0\'ee\'f7\'ea\'ee\'e9 \'ee\'e1\'ed\'ee\'e2\'eb\'ff\'f2\'fc \'e8 \'f0\'e8\'f1\'ee\'e2\'e0\'f2\'fc \'f1\'ee\'f2\'ed\'e8 \'ee\'e1\'fa\'e5\'ea\'f2\'ee\'e2 (\'ed\'e0\'ef\'f0\'e8\'ec\'e5\'f0, \'ef\'f3\'eb\'fc \'e8\'eb\'e8 \'e2\'f0\'e0\'e3\'ee\'e2), \'e0 \'f2\'e0\'ea\'e6\'e5 \'e1\'fb\'f1\'f2\'f0\'ee \'ef\'f0\'ee\'e2\'e5\'f0\'ff\'f2\'fc \'ec\'e0\'f1\'f1\'ee\'e2\'fb\'e5 \'f1\'f2\'ee\'eb\'ea\'ed\'ee\'e2\'e5\'ed\'e8\'ff (`pygame.sprite.spritecollide`).\f2\lang1033\par
+}
+ 

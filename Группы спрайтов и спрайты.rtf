@@ -1,0 +1,206 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset204 Calibri;}{\f2\fnil Calibri;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang1033 **\f1\lang1049\'c4\'e0, \'e0\'e1\'f1\'ee\'eb\'fe\'f2\'ed\'ee!** \'d0\'e0\'e7\'e4\'e5\'eb\'e5\'ed\'e8\'e5 \'ee\'e1\'fa\'e5\'ea\'f2\'ee\'e2 \'ef\'ee \'f0\'e0\'e7\'ed\'fb\'ec \'e3\'f0\'f3\'ef\'ef\'e0\'ec \f2\emdash  \f1\'fd\'f2\'ee \'e8 \'e5\'f1\'f2\'fc \'e3\'eb\'e0\'e2\'ed\'e0\'ff \'f1\'f3\'ef\'e5\'f0\'f1\'e8\'eb\'e0 `pygame.sprite.Group`. \par
+\par
+\'ce\'e1\'fb\'f7\'ed\'ee \'e2 \'e8\'e3\'f0\'e0\'f5 \'f1\'ee\'e7\'e4\'e0\'fe\'f2 \'ed\'e5\'f1\'ea\'ee\'eb\'fc\'ea\'ee \'f2\'e5\'ec\'e0\'f2\'e8\'f7\'e5\'f1\'ea\'e8\'f5 \'e3\'f0\'f3\'ef\'ef: \'ed\'e0\'ef\'f0\'e8\'ec\'e5\'f0, `enemies` (\'e2\'f0\'e0\'e3\'e8), `bullets` (\'ef\'f3\'eb\'e8), `platforms` (\'ef\'eb\'e0\'f2\'f4\'ee\'f0\'ec\'fb), \'e0 \'f2\'e0\'ea\'e6\'e5 \'ee\'e4\'ed\'f3 \'ee\'e1\'f9\'f3\'fe \'e3\'f0\'f3\'ef\'ef\'f3 `all_sprites` (\'e2\'f1\'e5 \'f1\'ef\'f0\'e0\'e9\'f2\'fb), \'f7\'f2\'ee\'e1\'fb \'f0\'e8\'f1\'ee\'e2\'e0\'f2\'fc \'e8\'f5 \'e2\'f1\'e5 \'ee\'e4\'ed\'ee\'e9 \'ea\'ee\'ec\'e0\'ed\'e4\'ee\'e9.\par
+\par
+\'c2\'ee\'f2 \'ef\'ee\'e4\'f0\'ee\'e1\'ed\'fb\'e9 \'f0\'e0\'e7\'e1\'ee\'f0 \'f2\'ee\'e3\'ee, \'ea\'e0\'ea \'f0\'e0\'e1\'ee\'f2\'e0\'fe\'f2 \'f1\'ef\'f0\'e0\'e9\'f2\'fb \'e8 \'e3\'f0\'f3\'ef\'ef\'fb.\par
+\par
+---\par
+\par
+### 1. \'d7\'f2\'ee \'f2\'e0\'ea\'ee\'e5 `pygame.sprite.Sprite`?\par
+\'dd\'f2\'ee \'e1\'e0\'e7\'ee\'e2\'fb\'e9 \'ea\'eb\'e0\'f1\'f1 \'e4\'eb\'ff \'eb\'fe\'e1\'ee\'e3\'ee \'e2\'e8\'e4\'e8\'ec\'ee\'e3\'ee \'ee\'e1\'fa\'e5\'ea\'f2\'e0 \'e2 \'e8\'e3\'f0\'e5. \'d7\'f2\'ee\'e1\'fb \'f1\'ee\'e7\'e4\'e0\'f2\'fc \'f1\'e2\'ee\'e9 \'ee\'e1\'fa\'e5\'ea\'f2 (\'e8\'e3\'f0\'ee\'ea\'e0, \'e2\'f0\'e0\'e3\'e0, \'ef\'f3\'eb\'fe), \'ed\'f3\'e6\'ed\'ee \'f3\'ed\'e0\'f1\'eb\'e5\'e4\'ee\'e2\'e0\'f2\'fc \'e5\'e3\'ee \'ee\'f2 `Sprite`. \par
+\par
+\'d3 \'ea\'e0\'e6\'e4\'ee\'e3\'ee \'ef\'f0\'e0\'e2\'e8\'eb\'fc\'ed\'ee\'e3\'ee \'f1\'ef\'f0\'e0\'e9\'f2\'e0 **\'ee\'e1\'ff\'e7\'e0\'f2\'e5\'eb\'fc\'ed\'ee** \'e4\'ee\'eb\'e6\'ed\'fb \'e1\'fb\'f2\'fc \'e4\'e2\'e0 \'f1\'e2\'ee\'e9\'f1\'f2\'e2\'e0:\par
+1. `self.image` \f2\emdash  \f1\'ea\'e0\'f0\'f2\'e8\'ed\'ea\'e0 (\'e8\'eb\'e8 \'ef\'f0\'ee\'f1\'f2\'ee \'e7\'e0\'eb\'e8\'f2\'fb\'e9 \'f6\'e2\'e5\'f2\'ee\'ec \'ef\'f0\'ff\'ec\'ee\'f3\'e3\'ee\'eb\'fc\'ed\'e8\'ea/\'ef\'ee\'e2\'e5\'f0\'f5\'ed\'ee\'f1\'f2\'fc).\par
+2. `self.rect` \f2\emdash  \f1\'ea\'ee\'ee\'f0\'e4\'e8\'ed\'e0\'f2\'fb \'e8 \'f0\'e0\'e7\'ec\'e5\'f0\'fb \'fd\'f2\'ee\'e9 \'ea\'e0\'f0\'f2\'e8\'ed\'ea\'e8 (`Rect` \'e8\'eb\'e8 `FRect`).\par
+\par
+\'d2\'e0\'ea\'e6\'e5 \'f3 \'f1\'ef\'f0\'e0\'e9\'f2\'e0 \'ef\'f0\'e8\'ed\'ff\'f2\'ee \'f1\'ee\'e7\'e4\'e0\'e2\'e0\'f2\'fc \'ec\'e5\'f2\'ee\'e4 `update()`, \'e2 \'ea\'ee\'f2\'ee\'f0\'ee\'ec \'ee\'ef\'e8\'f1\'fb\'e2\'e0\'e5\'f2\'f1\'ff \'e5\'e3\'ee \'ef\'ee\'e2\'e5\'e4\'e5\'ed\'e8\'e5 (\'e4\'e2\'e8\'e6\'e5\'ed\'e8\'e5, \'e0\'ed\'e8\'ec\'e0\'f6\'e8\'ff).\par
+\par
+```python\par
+class Enemy(pygame.sprite.Sprite):\par
+    def __init__(self, x, y):\par
+        super().__init__() # \'ce\'c1\'df\'c7\'c0\'d2\'c5\'cb\'dc\'cd\'ce \'e2\'fb\'e7\'fb\'e2\'e0\'e5\'ec \'e8\'ed\'e8\'f6\'e8\'e0\'eb\'e8\'e7\'e0\'f2\'ee\'f0 \'f0\'ee\'e4\'e8\'f2\'e5\'eb\'ff\par
+        \par
+        # 1. \'d1\'ee\'e7\'e4\'e0\'e5\'ec \'e2\'ed\'e5\'f8\'ed\'e8\'e9 \'e2\'e8\'e4 (image)\par
+        self.image = pygame.Surface((40, 40))\par
+        self.image.fill("red")\par
+        \par
+        # 2. \'d1\'ee\'e7\'e4\'e0\'e5\'ec \'f5\'e8\'f2\'e1\'ee\'ea\'f1 (rect) \'e8 \'f1\'f2\'e0\'e2\'e8\'ec \'e5\'e3\'ee \'e2 \'ea\'ee\'ee\'f0\'e4\'e8\'ed\'e0\'f2\'fb x, y\par
+        self.rect = self.image.get_rect(topleft=(x, y))\par
+        \par
+        self.speed = 3\par
+\par
+    # 3. \'cb\'ee\'e3\'e8\'ea\'e0 \'ef\'ee\'e2\'e5\'e4\'e5\'ed\'e8\'ff \'ee\'e1\'fa\'e5\'ea\'f2\'e0\par
+    def update(self):\par
+        self.rect.y += self.speed # \'c2\'f0\'e0\'e3 \'ef\'e0\'e4\'e0\'e5\'f2 \'e2\'ed\'e8\'e7\par
+        \par
+        # \'c5\'f1\'eb\'e8 \'e2\'f0\'e0\'e3 \'f3\'eb\'e5\'f2\'e5\'eb \'e7\'e0 \'fd\'ea\'f0\'e0\'ed, \'f3\'e4\'e0\'eb\'ff\'e5\'ec \'e5\'e3\'ee\par
+        if self.rect.top > 600:\par
+            self.kill() # \'ca\'ee\'ec\'e0\'ed\'e4\'e0 kill() \'ed\'e0\'e2\'f1\'e5\'e3\'e4\'e0 \'f3\'e4\'e0\'eb\'ff\'e5\'f2 \'f1\'ef\'f0\'e0\'e9\'f2 \'e8\'e7 \'c2\'d1\'c5\'d5 \'e3\'f0\'f3\'ef\'ef!\par
+```\par
+\par
+---\par
+\par
+### 2. \'d7\'f2\'ee \'f2\'e0\'ea\'ee\'e5 `pygame.sprite.Group`?\par
+\'dd\'f2\'ee \'ea\'ee\'ed\'f2\'e5\'e9\'ed\'e5\'f0 (\'f1\'ef\'e8\'f1\'ee\'ea) \'e4\'eb\'ff \'f5\'f0\'e0\'ed\'e5\'ed\'e8\'ff \'f1\'ef\'f0\'e0\'e9\'f2\'ee\'e2. \'c3\'f0\'f3\'ef\'ef\'fb \'e1\'e5\'f0\'f3\'f2 \'ed\'e0 \'f1\'e5\'e1\'ff \'f0\'f3\'f2\'e8\'ed\'f3: \'e2\'e0\'ec \'ed\'e5 \'ed\'f3\'e6\'ed\'ee \'ef\'e5\'f0\'e5\'e1\'e8\'f0\'e0\'f2\'fc \'ee\'e1\'fa\'e5\'ea\'f2\'fb \'f6\'e8\'ea\'eb\'ee\'ec `for`, \'f7\'f2\'ee\'e1\'fb \'e8\'f5 \'f1\'e4\'e2\'e8\'ed\'f3\'f2\'fc \'e8\'eb\'e8 \'ed\'e0\'f0\'e8\'f1\'ee\'e2\'e0\'f2\'fc.\par
+\par
+**\'d1\'ee\'e7\'e4\'e0\'ed\'e8\'e5 \'e3\'f0\'f3\'ef\'ef:**\par
+```python\par
+# \'d1\'ee\'e7\'e4\'e0\'e5\'ec \'f0\'e0\'e7\'ed\'fb\'e5 \'e3\'f0\'f3\'ef\'ef\'fb\par
+all_sprites = pygame.sprite.Group() # \'c4\'eb\'ff \'ee\'f2\'f0\'e8\'f1\'ee\'e2\'ea\'e8 \'e2\'f1\'e5\'e3\'ee\par
+enemies = pygame.sprite.Group()     # \'d2\'ee\'eb\'fc\'ea\'ee \'e4\'eb\'ff \'e2\'f0\'e0\'e3\'ee\'e2\par
+bullets = pygame.sprite.Group()     # \'d2\'ee\'eb\'fc\'ea\'ee \'e4\'eb\'ff \'ef\'f3\'eb\'fc\par
+```\par
+\par
+**\'c4\'ee\'e1\'e0\'e2\'eb\'e5\'ed\'e8\'e5 \'ee\'e1\'fa\'e5\'ea\'f2\'ee\'e2 \'e2 \'e3\'f0\'f3\'ef\'ef\'fb:**\par
+```python\par
+# \'d1\'ee\'e7\'e4\'e0\'e5\'ec 5 \'e2\'f0\'e0\'e3\'ee\'e2\par
+for i in range(5):\par
+    mob = Enemy(i * 100, -50)\par
+    \par
+    # \'c4\'ee\'e1\'e0\'e2\'eb\'ff\'e5\'ec \'e2\'f0\'e0\'e3\'e0 \'f1\'f0\'e0\'e7\'f3 \'e2 \'e4\'e2\'e5 \'e3\'f0\'f3\'ef\'ef\'fb!\par
+    all_sprites.add(mob) # \'d7\'f2\'ee\'e1\'fb \'ee\'ed \'f0\'e8\'f1\'ee\'e2\'e0\'eb\'f1\'ff\par
+    enemies.add(mob)     # \'d7\'f2\'ee\'e1\'fb \'ef\'f0\'ee\'e2\'e5\'f0\'ff\'f2\'fc \'f1\'f2\'ee\'eb\'ea\'ed\'ee\'e2\'e5\'ed\'e8\'ff \'ef\'f3\'eb\'fc \'f1 \'fd\'f2\'ee\'e9 \'e3\'f0\'f3\'ef\'ef\'ee\'e9\par
+```\par
+\par
+---\par
+\par
+### 3. \'cc\'e0\'e3\'e8\'ff \'e3\'f0\'f3\'ef\'ef: \'ce\'e1\'ed\'ee\'e2\'eb\'e5\'ed\'e8\'e5 \'e8 \'ce\'f2\'f0\'e8\'f1\'ee\'e2\'ea\'e0\par
+\'c2 \'e3\'eb\'e0\'e2\'ed\'ee\'ec \'f6\'e8\'ea\'eb\'e5 \'e8\'e3\'f0\'fb \'e2\'ec\'e5\'f1\'f2\'ee \'f2\'ee\'e3\'ee, \'f7\'f2\'ee\'e1\'fb \'ee\'e1\'ed\'ee\'e2\'eb\'ff\'f2\'fc \'e8 \'f0\'e8\'f1\'ee\'e2\'e0\'f2\'fc \'ea\'e0\'e6\'e4\'fb\'e9 \'ee\'e1\'fa\'e5\'ea\'f2 \'ee\'f2\'e4\'e5\'eb\'fc\'ed\'ee, \'e2\'fb \'e4\'e5\'eb\'e0\'e5\'f2\'e5 \'fd\'f2\'ee \'e4\'e2\'f3\'ec\'ff \'f1\'f2\'f0\'ee\'f7\'ea\'e0\'ec\'e8:\par
+\par
+```python\par
+# 1. \'c2\'fb\'e7\'fb\'e2\'e0\'e5\'f2 \'ec\'e5\'f2\'ee\'e4 update() \'f3 \'ca\'c0\'c6\'c4\'ce\'c3\'ce \'f1\'ef\'f0\'e0\'e9\'f2\'e0 \'e2 \'e3\'f0\'f3\'ef\'ef\'e5\par
+all_sprites.update() \par
+\par
+# 2. \'d0\'e8\'f1\'f3\'e5\'f2 \'c2\'d1\'c5 \'f1\'ef\'f0\'e0\'e9\'f2\'fb \'e8\'e7 \'e3\'f0\'f3\'ef\'ef\'fb \'ed\'e0 \'fd\'ea\'f0\'e0\'ed\'e5 (\'e8\'f1\'ef\'ee\'eb\'fc\'e7\'f3\'ff \'e8\'f5 image \'e8 rect)\par
+all_sprites.draw(screen) \par
+```\par
+\par
+---\par
+\par
+### 4. \'d1\'f3\'ef\'e5\'f0-\'f4\'e8\'f8\'ea\'e0: \'cc\'e0\'f1\'f1\'ee\'e2\'fb\'e5 \'ef\'f0\'ee\'e2\'e5\'f0\'ea\'e8 \'f1\'f2\'ee\'eb\'ea\'ed\'ee\'e2\'e5\'ed\'e8\'e9\par
+\'c3\'f0\'f3\'ef\'ef\'fb \'ef\'ee\'e7\'e2\'ee\'eb\'ff\'fe\'f2 \'ef\'f0\'ee\'e2\'e5\'f0\'ff\'f2\'fc \'ea\'ee\'eb\'eb\'e8\'e7\'e8\'e8 \'f1\'f0\'e0\'e7\'f3 \'ec\'e5\'e6\'e4\'f3 \'e4\'e5\'f1\'ff\'f2\'ea\'e0\'ec\'e8 \'ee\'e1\'fa\'e5\'ea\'f2\'ee\'e2 \'e7\'e0 \'e4\'ee\'eb\'fe \'f1\'e5\'ea\'f3\'ed\'e4\'fb.\par
+\par
+**\'c0. \'ce\'e4\'e8\'ed \'ee\'e1\'fa\'e5\'ea\'f2 \'ef\'f0\'ee\'f2\'e8\'e2 \'c3\'f0\'f3\'ef\'ef\'fb (`spritecollide`)**\par
+\'cd\'e0\'ef\'f0\'e8\'ec\'e5\'f0, \'c8\'e3\'f0\'ee\'ea \'f1\'f2\'ee\'eb\'ea\'ed\'f3\'eb\'f1\'ff \'f1 \'ea\'e5\'ec-\'f2\'ee \'e8\'e7 \'e3\'f0\'f3\'ef\'ef\'fb \'c2\'f0\'e0\'e3\'ee\'e2:\par
+```python\par
+# spritecollide(\'ea\'f2\'ee_\'ee\'e4\'e8\'ed, \'f1_\'ea\'e0\'ea\'ee\'e9_\'e3\'f0\'f3\'ef\'ef\'ee\'e9, \'f3\'e4\'e0\'eb\'ff\'f2\'fc_\'eb\'e8_\'ef\'f0\'e8_\'f1\'f2\'ee\'eb\'ea\'ed\'ee\'e2\'e5\'ed\'e8\'e8)\par
+# \'c2\'ee\'e7\'e2\'f0\'e0\'f9\'e0\'e5\'f2 \'f1\'ef\'e8\'f1\'ee\'ea \'e2\'f0\'e0\'e3\'ee\'e2, \'f1 \'ea\'ee\'f2\'ee\'f0\'fb\'ec\'e8 \'f1\'f2\'ee\'eb\'ea\'ed\'f3\'eb\'f1\'ff \'e8\'e3\'f0\'ee\'ea\par
+hits = pygame.sprite.spritecollide(player, enemies, True)\par
+\par
+if hits:\par
+    print("\'c8\'e3\'f0\'ee\'ea \'ef\'ee\'eb\'f3\'f7\'e8\'eb \'f3\'f0\'ee\'ed \'ee\'f2 \'e2\'f0\'e0\'e3\'ee\'e2:", len(hits))\par
+    player.health -= 10\par
+```\par
+*\'c5\'f1\'eb\'e8 \'f2\'f0\'e5\'f2\'e8\'e9 \'ef\'e0\'f0\'e0\'ec\'e5\'f2\'f0 `True`, \'f2\'ee \'e2\'f0\'e0\'e3, \'ea\'ee\'f2\'ee\'f0\'ee\'e3\'ee \'ea\'ee\'f1\'ed\'f3\'eb\'f1\'ff \'e8\'e3\'f0\'ee\'ea, \'e0\'e2\'f2\'ee\'ec\'e0\'f2\'e8\'f7\'e5\'f1\'ea\'e8 \'e8\'f1\'f7\'e5\'e7\'ed\'e5\'f2 (\'e2\'fb\'e7\'ee\'e2\'e5\'f2\'f1\'ff \'e5\'e3\'ee \'ec\'e5\'f2\'ee\'e4 `kill()`). \'c5\'f1\'eb\'e8 `False` \f2\emdash  \f1\'ef\'f0\'ee\'f1\'f2\'ee \'e7\'e0\'f4\'e8\'ea\'f1\'e8\'f0\'f3\'e5\'f2\'f1\'ff \'ea\'e0\'f1\'e0\'ed\'e8\'e5.*\par
+\par
+**\'c1. \'c3\'f0\'f3\'ef\'ef\'e0 \'ef\'f0\'ee\'f2\'e8\'e2 \'c3\'f0\'f3\'ef\'ef\'fb (`groupcollide`)**\par
+\'cd\'e0\'ef\'f0\'e8\'ec\'e5\'f0, \'ef\'f3\'eb\'e8 (\'e3\'f0\'f3\'ef\'ef\'e0) \'ef\'ee\'ef\'e0\'e4\'e0\'fe\'f2 \'e2\'ee \'e2\'f0\'e0\'e3\'ee\'e2 (\'e3\'f0\'f3\'ef\'ef\'e0):\par
+```python\par
+# groupcollide(\'e3\'f0\'f3\'ef\'ef\'e01, \'e3\'f0\'f3\'ef\'ef\'e02, \'f3\'e4\'e0\'eb\'ff\'f2\'fc_\'eb\'e8_\'e8\'e7_\'e3\'f0\'f3\'ef\'ef\'fb1, \'f3\'e4\'e0\'eb\'ff\'f2\'fc_\'eb\'e8_\'e8\'e7_\'e3\'f0\'f3\'ef\'ef\'fb2)\par
+# \'c2\'ee\'e7\'e2\'f0\'e0\'f9\'e0\'e5\'f2 \'f1\'eb\'ee\'e2\'e0\'f0\'fc (\'f1\'eb\'ee\'e2\'e0\'f0\'fc \'ef\'ee\'ef\'e0\'e4\'e0\'ed\'e8\'e9)\par
+hits = pygame.sprite.groupcollide(bullets, enemies, True, True)\par
+\par
+# \'c5\'f1\'eb\'e8 \'f5\'ee\'f2\'ff \'e1\'fb \'ee\'e4\'ed\'e0 \'ef\'f3\'eb\'ff \'ef\'ee\'ef\'e0\'eb\'e0 \'e2\'ee \'e2\'f0\'e0\'e3\'e0 (\'ee\'e1\'e5 \'e8\'f1\'f7\'e5\'e7\'eb\'e8, \'f2.\'ea. True, True)\par
+for hit in hits:\par
+    score += 10 # \'c4\'e0\'e5\'ec \'ee\'f7\'ea\'e8 \'e7\'e0 \'ea\'e0\'e6\'e4\'ee\'e3\'ee \'f3\'e1\'e8\'f2\'ee\'e3\'ee\par
+    print("\'c2\'f0\'e0\'e3 \'ef\'ee\'e4\'e1\'e8\'f2!")\par
+```\par
+\par
+---\par
+\par
+### \'cf\'ee\'eb\'ed\'fb\'e9 \'ec\'e8\'ed\'e8-\'ef\'f0\'e8\'ec\'e5\'f0 (\'ca\'ee\'ef\'e8\'f0\'f3\'e9 \'e8 \'e7\'e0\'ef\'f3\'f1\'ea\'e0\'e9)\par
+\'c7\'e4\'e5\'f1\'fc \'ef\'ee\'ea\'e0\'e7\'e0\'ed\'ee, \'ea\'e0\'ea \'f0\'e0\'e1\'ee\'f2\'e0\'fe\'f2 \'e3\'f0\'f3\'ef\'ef\'fb: \'c8\'e3\'f0\'ee\'ea \'f1\'f2\'f0\'e5\'eb\'ff\'e5\'f2 \'ef\'f0\'ee\'e1\'e5\'eb\'ee\'ec, \'ef\'f3\'eb\'e8 \'eb\'e5\'f2\'ff\'f2 \'e2\'e2\'e5\'f0\'f5, \'e2\'f0\'e0\'e3\'e8 \'f1\'f2\'ee\'ff\'f2 \'ed\'e0 \'ec\'e5\'f1\'f2\'e5.\par
+\par
+```python name=main.py\par
+import pygame\par
+import sys\par
+\par
+pygame.init()\par
+screen = pygame.display.set_mode((800, 600))\par
+clock = pygame.time.Clock()\par
+\par
+# --- \'ca\'cb\'c0\'d1\'d1\'db ---\par
+class Player(pygame.sprite.Sprite):\par
+    def __init__(self):\par
+        super().__init__()\par
+        self.image = pygame.Surface((50, 50))\par
+        self.image.fill("green")\par
+        self.rect = self.image.get_rect(center=(400, 500))\par
+\par
+    def update(self):\par
+        keys = pygame.key.get_pressed()\par
+        if keys[pygame.K_LEFT]: self.rect.x -= 5\par
+        if keys[pygame.K_RIGHT]: self.rect.x += 5\par
+\par
+    def shoot(self):\par
+        # \'d1\'ee\'e7\'e4\'e0\'e5\'ec \'ef\'f3\'eb\'fe \'e2 \'ea\'ee\'ee\'f0\'e4\'e8\'ed\'e0\'f2\'e0\'f5 \'f6\'e5\'ed\'f2\'f0\'e0 \'e8\'e3\'f0\'ee\'ea\'e0\par
+        bullet = Bullet(self.rect.centerx, self.rect.top)\par
+        all_sprites.add(bullet)\par
+        bullets.add(bullet)\par
+\par
+class Bullet(pygame.sprite.Sprite):\par
+    def __init__(self, x, y):\par
+        super().__init__()\par
+        self.image = pygame.Surface((10, 20))\par
+        self.image.fill("yellow")\par
+        self.rect = self.image.get_rect(center=(x, y))\par
+\par
+    def update(self):\par
+        self.rect.y -= 10 # \'cf\'f3\'eb\'ff \'eb\'e5\'f2\'e8\'f2 \'e2\'e2\'e5\'f0\'f5\par
+        if self.rect.bottom < 0:\par
+            self.kill() # \'d3\'e4\'e0\'eb\'ff\'e5\'ec, \'e5\'f1\'eb\'e8 \'e2\'fb\'eb\'e5\'f2\'e5\'eb\'e0 \'e7\'e0 \'fd\'ea\'f0\'e0\'ed\par
+\par
+class Enemy(pygame.sprite.Sprite):\par
+    def __init__(self, x, y):\par
+        super().__init__()\par
+        self.image = pygame.Surface((40, 40))\par
+        self.image.fill("red")\par
+        self.rect = self.image.get_rect(topleft=(x, y))\par
+\par
+# --- \'cf\'ce\'c4\'c3\'ce\'d2\'ce\'c2\'ca\'c0 \'c3\'d0\'d3\'cf\'cf ---\par
+all_sprites = pygame.sprite.Group()\par
+enemies = pygame.sprite.Group()\par
+bullets = pygame.sprite.Group()\par
+\par
+player = Player()\par
+all_sprites.add(player)\par
+\par
+# \'d1\'ef\'e0\'e2\'ed\'e8\'ec 5 \'e2\'f0\'e0\'e3\'ee\'e2\par
+for i in range(5):\par
+    enemy = Enemy(100 + i * 120, 100)\par
+    all_sprites.add(enemy)\par
+    enemies.add(enemy)\par
+\par
+# --- \'c3\'cb\'c0\'c2\'cd\'db\'c9 \'d6\'c8\'ca\'cb ---\par
+running = True\par
+while running:\par
+    for event in pygame.event.get():\par
+        if event.type == pygame.QUIT:\par
+            running = False\par
+        elif event.type == pygame.KEYDOWN:\par
+            if event.key == pygame.K_SPACE:\par
+                player.shoot() # \'c2\'fb\'f1\'f2\'f0\'e5\'eb \'ef\'ee \'ef\'f0\'ee\'e1\'e5\'eb\'f3\par
+\par
+    # 1. \'ce\'e1\'ed\'ee\'e2\'eb\'ff\'e5\'ec \'eb\'ee\'e3\'e8\'ea\'f3 \'c2\'d1\'c5\'d5 \'ee\'e1\'fa\'e5\'ea\'f2\'ee\'e2 \'f0\'e0\'e7\'ee\'ec\par
+    all_sprites.update()\par
+\par
+    # 2. \'cf\'f0\'ee\'e2\'e5\'f0\'ff\'e5\'ec \'f1\'f2\'ee\'eb\'ea\'ed\'ee\'e2\'e5\'ed\'e8\'ff \'ec\'e5\'e6\'e4\'f3 \'e3\'f0\'f3\'ef\'ef\'ee\'e9 \'ef\'f3\'eb\'fc \'e8 \'e3\'f0\'f3\'ef\'ef\'ee\'e9 \'e2\'f0\'e0\'e3\'ee\'e2\par
+    # \'ce\'e1\'e5 \'e8\'f1\'f7\'e5\'e7\'ed\'f3\'f2 \'ef\'f0\'e8 \'ea\'e0\'f1\'e0\'ed\'e8\'e8 (True, True)\par
+    hits = pygame.sprite.groupcollide(bullets, enemies, True, True)\par
+    if hits:\par
+        print("\'cf\'ee\'ef\'e0\'e4\'e0\'ed\'e8\'e5!")\par
+\par
+    # 3. \'ce\'f2\'f0\'e8\'f1\'ee\'e2\'ea\'e0\par
+    screen.fill("black")\par
+    all_sprites.draw(screen) # \'d0\'e8\'f1\'f3\'e5\'ec \'c2\'d1\'c5 \'ee\'e1\'fa\'e5\'ea\'f2\'fb \'f0\'e0\'e7\'ee\'ec\par
+    \par
+    pygame.display.flip()\par
+    clock.tick(60)\par
+\par
+pygame.quit()\par
+sys.exit()\par
+```\f0\lang1033\par
+}
+ 
