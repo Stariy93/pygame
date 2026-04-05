@@ -22,11 +22,12 @@ class Button():
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if self.rect.collidepoint(event.pos):
                 self.mouse_tup = True
+                if self.action is not None:
+                    self.action()
                 
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             self.mouse_tup = False
-            if self.action is not None:
-                    self.action()
+            
 
 
 
