@@ -1,6 +1,12 @@
 # Разрешение экрана
-WIDTH = 9 * 50
-HEIGHT = 19 * 50
+import pygame
+
+
+info = pygame.display.Info()
+display_width = info.current_w
+display_height = info.current_h
+WIDTH = round(display_height * (9/19))
+HEIGHT = display_height
 
 # Настройки игры
 FPS = 60

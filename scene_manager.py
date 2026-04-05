@@ -9,13 +9,16 @@ class Scene_manager():
         self.width, self.height = set.WIDTH, set.HEIGHT
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption(set.TITLE)
+        self.running = True
 
     def change_scene(self, new_scene):
         self.scene = new_scene
 
+    def exit_game(self):
+        self.running = False
+
     def game(self):
-        running = True
-        while running:
+        while self.running:
             dt = self.clock.tick(set.FPS) / 1000.0
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
