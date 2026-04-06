@@ -1,7 +1,4 @@
 import pygame
-import sys
-import cell
-import button
 
 # 1. Инициализация Pygame
 pygame.init()
