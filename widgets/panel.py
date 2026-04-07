@@ -18,6 +18,10 @@ class Panel():
             self.rect.topleft = (x, y)
         elif pos == "right":
             self.rect.topright = (x, y)
+        elif pos == "top":
+            self.rect.midtop = (x, y)
+        elif pos == "bottom":
+            self.rect.midbottom = (x, y)
        
     
         

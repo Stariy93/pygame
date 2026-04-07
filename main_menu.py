@@ -1,5 +1,5 @@
 import pygame
-import button
+import widgets.button as button
 import start_menu
 
 class Main_menu():

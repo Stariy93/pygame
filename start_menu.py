@@ -1,10 +1,10 @@
 import pygame
 
-import button
+import widgets.button as button
 import main_menu
 import settings
-import panel
-import VBox
+import widgets.panel as panel
+import Boxes.HBox as HBox
 
 class Start_menu():
     def __init__(self, manager):
@@ -13,7 +13,7 @@ class Start_menu():
         self.p = panel.Panel(10, 20, 200, 200, color=(100,100,100))
         self.btn_new_game = button.Button(text = "Start", action=lambda: self.go_to_mein_menu())
         self.btn_exit = button.Button(text = "Exit", action=lambda: self.exit())
-        self.layout = VBox.VBox(pos="left", rect=self.panel.rect, gap = 10, padding=self.panel.rect.height//3)
+        self.layout = HBox.HBox(pos="bottom", rect=self.panel.rect, gap = 10, padding=10)
         self.layout.add(self.btn_new_game)
         self.layout.add(self.btn_exit)
         self.layout.add(self.p)
