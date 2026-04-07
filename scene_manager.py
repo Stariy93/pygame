@@ -22,7 +22,7 @@ class Scene_manager():
             dt = self.clock.tick(set.FPS) / 1000.0
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False  
+                    self.running = False  
                 self.scene.event(event)
             self.screen.fill((255, 255, 255))
             self.scene.draw()
