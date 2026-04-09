@@ -5,29 +5,20 @@ import main_menu
 import settings
 import widgets.panel as panel
 import Boxes.HBox as HBox
+import widgets.Text as Text
+import widgets.Button_i as ButtonM
 
 class Start_menu():
     def __init__(self, manager):
         self.manager = manager
-        self.panel = panel.Panel(100, 200, settings.WIDTH - 200, settings.HEIGHT - 400)
-        self.p = panel.Panel(10, 20, 200, 200, color=(100,100,100))
-        self.btn_new_game = button.Button(text = "Start", action=lambda: self.go_to_mein_menu())
-        self.btn_exit = button.Button(text = "Exit", action=lambda: self.exit())
-        self.layout = HBox.HBox(pos="bottom", rect=self.panel.rect, gap = 10, padding=10)
-        self.layout.add(self.btn_new_game)
-        self.layout.add(self.btn_exit)
-        self.layout.add(self.p)
-        self.layout.apply()
+        self.b = ButtonM.Button_i(action = lambda: self.go_to_mein_menu())
+        
 
     def event(self, event):
-        self.btn_new_game.event(event)
-        self.btn_exit.event(event)
+        self.b.event(event)
 
     def draw(self):
-        self.panel.draw()
-        self.btn_new_game.draw()
-        self.btn_exit.draw()
-        self.p.draw()
+        self.b.draw()
 
     def go_to_mein_menu(self):
         next_scene = main_menu.Main_menu(self.manager)
