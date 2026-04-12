@@ -1,8 +1,9 @@
 import pygame
+from widgets.widget import Widget
 
-class Button_i():
-    def __init__(self, file_path = "sprites/sprite_1.png", x = 0, y = 0, text = "start", action=None):
-        self.screen = pygame.display.get_surface()
+class ButtonI(Widget):
+    def __init__(self, file_path = "sprites/btn_menu.png", x = 0, y = 0, text = "start", action=None):
+        super().__init__()
         self.image = pygame.image.load(file_path).convert_alpha()
         self.rect = self.image.get_rect(topleft = (x, y))
         font_size = self.rect.height//2
@@ -13,7 +14,7 @@ class Button_i():
         self.is_pressed = False
         self.action = action
 
-    def draw(self):
+    def _draw(self):
         if self.is_pressed == False:
             self.screen.blit(self.image, self.rect)
         else:
@@ -21,7 +22,7 @@ class Button_i():
             pygame.draw.rect(self.screen, "grey", self.rect, 15)
         self.screen.blit(self.text_surface, self.text_rect)
 
-    def event(self, event):
+    def _event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if self.rect.collidepoint(event.pos):
                 self.is_pressed = True
@@ -34,15 +35,6 @@ class Button_i():
             self.is_pressed = False
 
     def set_position(self, pos = "center", x = 0, y = 0):
-        if pos == "center":
-            self.rect.center = (x, y)
-        elif pos == "left":
-            self.rect.topleft = (x, y)
-        elif pos == "right":
-            self.rect.topright = (x, y)
-        elif pos == "top":
-            self.rect.midtop = (x, y)
-        elif pos == "bottom":
-            self.rect.midbottom = (x, y)
+        super().set_position(pos, x, y)
         self.text_rect = self.text_surface.get_rect(center = self.rect.center)
 

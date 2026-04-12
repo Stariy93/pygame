@@ -2,7 +2,7 @@ import pygame
 import sys
 import settings as set
 
-class Scene_manager():
+class SceneManager():
     def __init__(self, scene):
         self.scene = scene
         self.clock = pygame.time.Clock()
