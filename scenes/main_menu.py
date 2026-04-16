@@ -15,15 +15,14 @@ class MainMenu():
         self.box = v_box.VBox("center", self.panel.rect, gap = 20, padding = 24)
         self.panel.set_layout(self.box)
         self.title = Text(54, "Scrollable panel content clips outside the viewport")
-        self.box.add(self.title)
-        self.box.add(Spacer(height = 10))
-        self.box.add(self.btn_back)
+        self.panel.add(self.title)
+        self.panel.add(Spacer(height = 10))
+        self.panel.add(self.btn_back)
 
         for index in range(1, 9):
-            self.box.add(button_i.ButtonI(text = f"demo {index}", action = self._noop))
+            self.panel.add(button_i.ButtonI(text = f"demo {index}", action = self._noop))
 
-        self.box.add(Spacer(height = 140))
-        self.panel._refresh_layout()
+        self.panel.add(Spacer(height = 140))
 
     def event(self, event):
         self.panel.event(event)
